@@ -1,0 +1,225 @@
+/*********************************************[ 02:15 PM ]***********************************************/
+
+Something went wrong
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 02:25 PM ]***********************************************/
+
+Something went wrong
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 02:26 PM ]***********************************************/
+
+Something went wrong
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 02:27 PM ]***********************************************/
+
+Something went wrong
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 02:28 PM ]***********************************************/
+
+Something went wrong
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 02:33 PM ]***********************************************/
+
+error: column "RecordID" does not exist
+    at Parser.parseErrorMessage (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-protocol\dist\parser.js:285:98)
+    at Parser.handlePacket (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-protocol\dist\parser.js:122:29)
+    at Parser.parse (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-protocol\dist\parser.js:35:38)
+    at Socket.<anonymous> (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-protocol\dist\index.js:11:42)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 02:33 PM ]***********************************************/
+
+Something went wrong
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 02:35 PM ]***********************************************/
+
+error: column "RecordID" does not exist
+    at Parser.parseErrorMessage (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-protocol\dist\parser.js:285:98)
+    at Parser.handlePacket (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-protocol\dist\parser.js:122:29)
+    at Parser.parse (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-protocol\dist\parser.js:35:38)
+    at Socket.<anonymous> (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-protocol\dist\index.js:11:42)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 02:36 PM ]***********************************************/
+
+error: column "RecordID" does not exist
+    at Parser.parseErrorMessage (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-protocol\dist\parser.js:285:98)
+    at Parser.handlePacket (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-protocol\dist\parser.js:122:29)
+    at Parser.parse (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-protocol\dist\parser.js:35:38)
+    at Socket.<anonymous> (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-protocol\dist\index.js:11:42)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 02:52 PM ]***********************************************/
+
+ReferenceError: extractCountry is not defined
+    at export (file:///D:/JITENDER/Cypher_Backend/NewBackendArchAPIs/src/controllers/auth/mirrorController.js:12:17)
+    at Layer.handleRequest (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\lib\layer.js:152:17)
+    at next (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\lib\route.js:117:3)
+    at handle (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\lib\layer.js:152:17)
+    at D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\index.js:295:15
+    at processParams (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\index.js:582:12)
+    at next (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\index.js:291:5)
+    at countryBodyValidator (file:///D:/JITENDER/Cypher_Backend/NewBackendArchAPIs/src/middlewares/countryValidator.js:40:9)
+    at Layer.handleRequest (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\index.js:342:13)
+    at D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\index.js:297:9
+    at processParams (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\index.js:582:12)
+    at next (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\router\index.js:291:5)
+    at middleware (D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\express-validator\lib\middlewares\check.js:16:13)
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 04:27 PM ]***********************************************/
+
+Something went wrong
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 04:27 PM ]***********************************************/
+
+Something went wrong
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 04:31 PM ]***********************************************/
+
+Something went wrong
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 04:32 PM ]***********************************************/
+
+Something went wrong
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 04:35 PM ]***********************************************/
+
+error: malformed array literal: ""ValueInUSD","Imp_Name","Exp_Name","HsCode","CountryofDestination""
+    at D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getavailableFieldlist (file:///D:/JITENDER/Cypher_Backend/NewBackendArchAPIs/src/utils/common.js:175:30)
+    at async getRecordCountController (file:///D:/JITENDER/Cypher_Backend/NewBackendArchAPIs/src/controllers/auth/analysisController.js:83:20)
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 04:54 PM ]***********************************************/
+
+error: malformed array literal: ""ValueInUSD","Imp_Name","Exp_Name","HsCode","CountryofDestination""
+    at D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getavailableFieldlist (file:///D:/JITENDER/Cypher_Backend/NewBackendArchAPIs/src/utils/common.js:175:30)
+    at async getRecordCountController (file:///D:/JITENDER/Cypher_Backend/NewBackendArchAPIs/src/controllers/auth/analysisController.js:83:20)
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 04:59 PM ]***********************************************/
+
+error: malformed array literal: ""ValueInUSD","Imp_Name","Exp_Name","HsCode","CountryofDestination""
+    at D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getavailableFieldlist (file:///D:/JITENDER/Cypher_Backend/NewBackendArchAPIs/src/utils/common.js:175:30)
+    at async getRecordCountController (file:///D:/JITENDER/Cypher_Backend/NewBackendArchAPIs/src/controllers/auth/analysisController.js:83:20)
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 05:17 PM ]***********************************************/
+
+ReferenceError: deductSearches is not defined
+    at import (file:///D:/JITENDER/Cypher_Backend/NewBackendArchAPIs/src/controllers/auth/weeklyController.js:43:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 05:18 PM ]***********************************************/
+
+ReferenceError: UserId is not defined
+    at import (file:///D:/JITENDER/Cypher_Backend/NewBackendArchAPIs/src/controllers/auth/weeklyController.js:43:48)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 05:18 PM ]***********************************************/
+
+ReferenceError: UserId is not defined
+    at import (file:///D:/JITENDER/Cypher_Backend/NewBackendArchAPIs/src/controllers/auth/weeklyController.js:43:48)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 05:53 PM ]***********************************************/
+
+Something went wrong
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 05:55 PM ]***********************************************/
+
+Something went wrong
+
+/****************************************************************************************************/
+
+
+/*********************************************[ 06:01 PM ]***********************************************/
+
+TypeError: Client was passed a null or undefined query
+    at D:\JITENDER\Cypher_Backend\NewBackendArchAPIs\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async common (file:///D:/JITENDER/Cypher_Backend/NewBackendArchAPIs/src/controllers/auth/sideFilterController.js:177:28)
+
+/****************************************************************************************************/
+
+

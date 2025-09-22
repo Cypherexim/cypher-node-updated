@@ -1,0 +1,100 @@
+import express from "express";
+
+import controllers from "../../controllers/index.js";
+import { jwtMiddleHandler } from "../../middlewares/jwt.js";
+import { countryBodyValidator } from "../../middlewares/countryValidator.js";
+
+const router = express.Router();
+const { customController, indiaController, weeklyController } = controllers;
+
+router.use([jwtMiddleHandler, countryBodyValidator]);
+
+//////////////////////////////export APIs////////////////////////////////////////
+router.post('/getWeeklyExports', weeklyController?.export);
+router.post('/getIndiaExports', indiaController?.export);
+router.post('/getArgentinaExports', customController?.export);
+router.post('/getBoliviaExports', customController?.export);
+router.post('/getBotswanaExports', customController?.export);
+router.post('/getGhanaExports', customController?.export);
+router.post('/getBangladeshExports', customController?.export);
+router.post('/getIndonesiaExports', customController?.export);
+router.post('/getVietnamExports', customController?.export);
+router.post('/getNicaraguaExports', customController?.export);
+router.post('/getPanamaExports', customController?.export);
+router.post('/getTanzaniaExports', customController?.export);
+router.post('/getSrilankaExports', customController?.export);
+router.post('/getEthiopiaExports', customController?.export);
+router.post('/getChileExports', customController?.export);
+router.post('/getPhilipExports', customController?.export);
+router.post('/getTurkeyExports', customController?.export);
+router.post('/getRussiaExports', customController?.export);
+router.post('/getKenyaExports', customController?.export);
+router.post('/getLesothoExports', customController?.export);
+router.post('/getMexicoExports', customController?.export);
+router.post('/getNigeriaExports', customController?.export);
+router.post('/getBrazilExports', customController?.export);
+router.post('/getColumbiaExports', customController?.export);
+router.post('/getParaguayExports', customController?.export);
+router.post('/getPeruExports', customController?.export);
+router.post('/getUgandaExports', customController?.export);
+router.post('/getPakistanExports', customController?.export);
+router.post('/getNamibiaExports', customController?.export);
+router.post('/getEcuadorExports', customController?.export);
+router.post('/getIvorycostExports', customController?.export);
+router.post('/getUruguayExports', customController?.export);
+router.post('/getUzbekistanExports', customController?.export);
+router.post('/getVenezuelaExports', customController?.export);
+router.post('/getUkraineExports', customController?.export);
+router.post('/getCostaricaExports', customController?.export);
+router.post('/getKazakhastanExports', customController?.export);
+router.post('/getCostademarfilExports', customController?.export);
+router.post('/getUSAExports', customController?.export);
+router.post('/getCameroonExports', customController?.export);
+
+
+////////////////////////////////////import APIs///////////////////////////////////////
+router.post('/getWeeklyImports', weeklyController?.import);
+router.post('/getIndiaImports', indiaController?.import);
+router.post('/getArgentinaImports', customController?.import);
+router.post('/getBoliviaImports', customController?.import);
+router.post('/getBurundiImports', customController?.import);
+router.post('/getBotswanaImports', customController?.import);
+router.post('/getCameroonImports', customController?.import);
+router.post('/getGhanaImports', customController?.import);
+router.post('/getBangladeshImports', customController?.import);
+router.post('/getIndonesiaImports', customController?.import);
+router.post('/getVietnamImports', customController?.import);
+router.post('/getNicaraguaImports', customController?.import);
+router.post('/getPanamaImports', customController?.import);
+router.post('/getTanzaniaImports', customController?.import);
+router.post('/getSrilankaImports', customController?.import);
+router.post('/getEthiopiaImports', customController?.import);
+router.post('/getChileImports', customController?.import);
+router.post('/getPhilipImports', customController?.import);
+router.post('/getTurkeyImports', customController?.import);
+router.post('/getRussiaImports', customController?.import);
+router.post('/getKenyaImports', customController?.import);
+router.post('/getLesothoImports', customController?.import);
+router.post('/getMexicoImports', customController?.import);
+router.post('/getNigeriaImports', customController?.import);
+router.post('/getUsaImports', customController?.import);
+router.post('/getBrazilImports', customController?.import);
+router.post('/getColumbiaImports', customController?.import);
+router.post('/getIvorycostImports', customController?.import);
+router.post('/getEcuadorImports', customController?.import);
+router.post('/getNamibiaImports', customController?.import);
+router.post('/getPeruImports', customController?.import);
+router.post('/getSouthsudanImports', customController?.import);
+router.post('/getUruguayImports', customController?.import);
+router.post('/getUzbekistanImports', customController?.import);
+router.post('/getVenezuelaImports', customController?.import);
+router.post('/getUkraineImports', customController?.import);
+router.post('/getCostaricaImports', customController?.import);
+router.post('/getKazakhastanImports', customController?.import);
+router.post('/getPakistanImports', customController?.import);
+router.post('/getCostademarfilImports', customController?.import);
+router.post('/getParaguayImports', customController?.import);
+router.post('/getRwandaImports', customController?.import);
+router.post('/getUgandaImports', customController?.import);
+
+export default router;

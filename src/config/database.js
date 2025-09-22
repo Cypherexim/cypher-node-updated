@@ -1,5 +1,8 @@
 import {Pool} from "pg";
+
 import environment from "./environment.js";
+import { writeExcelFileService } from "../services/excelWrite.js";
+
 
 const connPool = new Pool({
     user: environment.database.user,
@@ -16,8 +19,8 @@ const connPool = new Pool({
     query_timeout: 1000*90
 });
 
-connPool.on("error", (err) => {
-    console.info(err);
+connPool.on("error", async(err) => {
+    await writeExcelFileService(err?.stack);
     if (err.message.includes('in recovery mode')) {
         console.error('Database is in recovery mode. Retrying in 5 seconds...');
     } else { console.error('DB Error:', err); }
@@ -25,7 +28,7 @@ connPool.on("error", (err) => {
 
 connPool.connect().then((res) => {
     console.log("DB is connected!");
-}).catch(err => console.log(err));
+}).catch(async(err) => await writeExcelFileService(err?.stack));
 
 
 export default connPool;
