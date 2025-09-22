@@ -15,14 +15,14 @@ import whatstrandingRoutes from "./auth/whatstranding.js";
 const routers = express.Router();
 
 routers.use("/", [
-    authRoutes,
+    // authRoutes,
     adminRoutes,
-    commonRoutes, 
-    generalRoutes, 
-    workspaceRoutes,
-    sideFilterRoutes, 
-    whatstrandingRoutes, 
-    companyProfileRoutes
+    // commonRoutes, 
+    // generalRoutes, 
+    // workspaceRoutes,
+    // sideFilterRoutes, 
+    // whatstrandingRoutes, 
+    // companyProfileRoutes
 ]);
 routers.use("/CUSTOM", customRoutes);
 routers.use("/MIRROR", mirrorRoutes);

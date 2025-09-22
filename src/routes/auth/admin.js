@@ -8,7 +8,7 @@ import { userValidation } from '../../middlewares/userValidation.js';
 const router = express.Router();
 const { planAdminController, countryAdminController, userAdminController, OthersAdminControllers } = controllers;
 
-router.use(jwtMiddleHandler);
+// router.use(jwtMiddleHandler);
 
 //------------PLAN ROUTES-------------------//
 router.post('/addplan', planValidation, planAdminController?.createPlan);

@@ -90,7 +90,9 @@ export const generalController = {
                 } else {CountryType = "MIRROR";}
             } else {CountryType = "CUSTOM";}
 
-            db?.query(query?.getLatestDate, [CountryType, direction, countryCode], (error, results) => {
+             const getLatestDate = `SELECT "LatestDate" FROM public.datauploadhistorybydate where "CountryType"=$1 AND "Direction"=$2 AND "CountryCode"=$3 AND "active"=true`;
+
+            db?.query(getLatestDate, [CountryType, direction, countryCode], (error, results) => {
                 if (!error) { return success(res, "SUCCESS", results?.rows, res?.statusCode); }
                 else { return next(ErrorHandling?.badRequestError(error?.message, error)); }
             });

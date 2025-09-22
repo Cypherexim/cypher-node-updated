@@ -50,7 +50,7 @@ export const userAdminController = {
                     } else { return next(ErrorHandling?.badRequestError(err1?.message, err1)); }
                 });
             }
-        } catch (error) { return next(ErrorHandling?.internalServerError(error?.message, error)); }        
+        } catch (err) { return next(ErrorHandling?.internalServerError(err?.message, err)); }        
     },
     
     getUserDetailsByEmail: (req, res, next) => {
@@ -61,7 +61,7 @@ export const userAdminController = {
                 if (err) { return next(ErrorHandling?.badRequestError(err?.message, err)); }
                 else { return success(res, "SUCCESS", results?.rows, res?.statusCode); }
             });
-        } catch (error) { return next(ErrorHandling?.internalServerError(err?.message, err)); }
+        } catch (err) { return next(ErrorHandling?.internalServerError(err?.message, err)); }
     },
 
     resetPassword: async (req, res, next) => {
@@ -102,7 +102,7 @@ export const userAdminController = {
                 if (err) { return next(ErrorHandling?.badRequestError(err?.message, err)); }
                 else { return success(res, "SUCCESS", results?.rows, res?.statusCode); }
             });
-        } catch (error) { return next(ErrorHandling.internalServerError(err?.message, err)); }
+        } catch (err) { return next(ErrorHandling.internalServerError(err?.message, err)); }
     },
 
     updateUserByAdmin: async (req, res) => {
@@ -147,7 +147,7 @@ export const userAdminController = {
                     } else { return next(ErrorHandling?.badRequestError(err1?.message, err1)); }
                 });
             } else { return next(ErrorHandling?.badRequestError(userRes?.message, userRes)); }
-        } catch (error) { return next(ErrorHandling?.internalServerError(error?.message, error)); }
+        } catch (err) { return next(ErrorHandling?.internalServerError(err?.message, err)); }
     },
 
     getAllUserlist: async (req, res) => {
