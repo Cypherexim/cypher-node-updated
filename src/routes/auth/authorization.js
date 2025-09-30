@@ -7,9 +7,9 @@ const router = Router();
 
 const { authController } = controllers;
 
-router.post('/signup', userValidation, authController?.createUser);
-router.post('/signin', userValidation, authController?.postLogin);
 router.get('/getErrorLogs/:date', authController?.getErrorLogs);
+router.post('/signin', userValidation, authController?.postLogin);
+router.post('/signup', userValidation, authController?.createUser);
 router.post('/changePassword', userValidation, authController?.changePassword);
 
 export default router;

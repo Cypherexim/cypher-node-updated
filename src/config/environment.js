@@ -18,7 +18,7 @@ const environment = {
             userRegisterationmailSubject: "User Registered Successfully!",
             userUpdatemailSubject: "User Updated Successfully!",
             accountcreationmailBody: "Congratulations! Your account has been created successfully Your password is the first five letters of your first name, followed by the last five digits of your contact number.\n\n\ne.g abcdefg@xyz.com and +91 9876543210 so password will be Abcde3210 Click here to Login : https://cypherexim.com Thank you for showing your trust in our services. Your satisfaction is our priority, and we will continue to strive to provide you with the highest quality products and services. We look forward to continuing to build our relationship and for the opportunities that lie ahead. If you have any questions or concerns, please do not hesitate to contact us.",
-            downloadsourceemail: "Cypher<dispatch@cypherexim.com",
+            downloadsourceemail: "Cypher<dispatch@cypherexim.com>",
             downloadSubject: "Download the Report!"
         },
         region:"us-east-1",
@@ -42,7 +42,7 @@ const environment = {
             userRegisterationmailSubject: "User Registered Successfully!",
             userUpdatemailSubject: "User Updated Successfully!",
             accountcreationmailBody: "Congratulations! Your account has been created successfully Your password is the first five letters of your first name, followed by the last five digits of your contact number.\n\n\ne.g abcdefg@xyz.com and +91 9876543210 so password will be Abcde3210 Click here to Login : https://cypherexim.com Thank you for showing your trust in our services. Your satisfaction is our priority, and we will continue to strive to provide you with the highest quality products and services. We look forward to continuing to build our relationship and for the opportunities that lie ahead. If you have any questions or concerns, please do not hesitate to contact us.",
-            downloadsourceemail: "Cypher<dispatch@cypherexim.com",
+            downloadsourceemail: "Cypher<dispatch@cypherexim.com>",
             downloadSubject: "Download the Report!"
         },
         region:"us-east-1",

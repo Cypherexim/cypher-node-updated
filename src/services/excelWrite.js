@@ -79,7 +79,7 @@ export const writeExcelFileService = async(result, dataDetails) => {
 
         for(let i=0; i<result?.rows?.length; i++) worksheet?.addRow(result?.rows[i])?.commit();
 
-        worksheet?.commit();        
+        worksheet.commit();    
 
         const secretKeys = await getAwsSecretValues();
         const s3 = new S3Client({
@@ -91,17 +91,19 @@ export const writeExcelFileService = async(result, dataDetails) => {
         });
         
         const params = { Bucket: 'cypher-download-files', Key: `${filename}.xlsx`, Body: stream };
-        const options = {partSize: 5 * 1024 * 1024, queueSize: 5};  
-        
+        const options = {partSize: 5 * 1024 * 1024, queueSize: 5};                  
+
         const upload = new Upload({
             client: s3,
             params,
             ...options
         });
         
-        await workbook?.commit(); //finalize the workbook
+        const uploadResultPromise = upload.done();
 
-        const uploadResult = await upload?.done();                
+        await workbook.commit(); //finalize the workbook (push data into stream)
+
+        const uploadResult = await uploadResultPromise; // Wait for upload to finish
 
         if(!uploadResult) {
             await db?.query(updateDownloadWorkspace, [{}, '', 'Error', `Error: ${uploadResult?.$metadata?.httpStatusCode}:${uploadResult?.Message}`, id]);
@@ -117,6 +119,7 @@ export const writeExcelFileService = async(result, dataDetails) => {
             await db?.query(updateDownloadCount, [totalDownloadCost, UserId]);
             await db?.query(updateDownloadWorkspace, [recordIds, uploadResult?.Location, 'Completed', '', expirydate, id]);
         }
+
         stream.end();
     } catch (error) {
         await errorFileWriter(error?.stack);

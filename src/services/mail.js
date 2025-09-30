@@ -45,7 +45,7 @@ export const sendDownloadingLinkMail = async(toEmail, Subject, htmlBody, carbonC
         cc: carbonCopy
     };
 
-    transporter?.sendMail(mailOptions, (error, info) => {
+    transporter.sendMail(mailOptions, (error, info) => {
         if(!error) return `'Email sent: ${info?.response}`;
         else console.log(error);
     });
