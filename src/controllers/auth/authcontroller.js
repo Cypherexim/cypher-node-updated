@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "node:path";
 import { hash, compare } from "bcryptjs";
 
 import db from "../../config/database.js";
@@ -106,7 +107,8 @@ export const authController = {
     },
 
     getErrorLogs: async(req, res, next) => {
-        const filepath = `./public/logs/${req?.params?.date}.txt`;
+        // const filepath = `./public/logs/${req?.params?.date}.txt`;
+        const filepath =  path.join(__dirname, "../../public/logs/", `${todayDate}.txt`);
 
         res?.setHeader("Content-Type", "text/plain", "charset=utf-8");
 
