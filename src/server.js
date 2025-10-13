@@ -11,6 +11,7 @@ import { generalPrometheusMiddleware } from "./middlewares/prometheus/general.js
 import { reqResSizeSpeed } from "./middlewares/prometheus/requestResponseSpeed.js";
 import { httpReqSizeByte } from "./middlewares/prometheus/requestSizeByteCounter.js";
 import { httpResSizeByte } from "./middlewares/prometheus/responseSizeByteCounter.js";
+import { antiXSSPolicy } from "./middlewares/jwt.js";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -18,12 +19,18 @@ const PORT = process.env.PORT || 8080;
 app.use(express.urlencoded({extended: false, limit: "100mb"}));
 app.use(express.json({limit: "100mb"}));
 
-app.use(cors());
+app.use(cors({
+  origin: ["https://cypherexim.com", "https://app.cypherexim.com", "https://eximine.com", "http://localhost:4200"],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'X-Access-Token', 'Accept', 'Origin', 'X-Requested-With'],
+  credentials: true
+}));
 
 cronJobs(); //start cron jobs
 
 //metrics middlewares
 app.use([
+    antiXSSPolicy,
     reqResSizeSpeed,
     httpResSizeByte,
     httpReqSizeByte,

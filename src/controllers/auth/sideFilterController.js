@@ -2,6 +2,7 @@ import db from "../../config/database.js";
 import { success } from "../../utils/response.js";
 import { ErrorHandling } from "../../error/error.js";
 import { getCurrentTableName } from "../../utils/utility.js";
+import { setWithGroupQuerySidefilter } from "../../utils/queryUnionGen.js";
 import { sideFiltersQuery, fetchSideFilterQuery } from "../../utils/miscellaneous.js";
 import { getDatabaseQuery, getPreRequiredDataForFurtherFetching } from "../../utils/common.js";
 
@@ -20,7 +21,7 @@ export const sideFilterController = {
             
             const availablefield = await db?.query('SELECT column_name FROM information_schema.columns WHERE table_name = $1 and column_name = ANY($2)', [tableName, fieldList]);
             if (availablefield?.rows?.length > 0 && isIndiaCountry) {
-                valuefield = 'ROUND(SUM(CAST("ValueInUSD" as DOUBLE PRECISION))::numeric,2) as ValueInUSD ';
+                valuefield = 'ROUND(SUM("ValueInUSD"::numeric), 2) AS ValueInUSD ';
             }
             const access = await db?.query(sideFiltersQuery?.GET_HSCODE_ACCESS, [CountryCode, Direction?.toUpperCase(), countryType]);            
     
@@ -46,7 +47,10 @@ export const sideFilterController = {
                         searchType: `sidefilter-${group}`
                     });
 
-                    const finalQuery = `${query[0]} Group By ${selectQuery?.replace('Distinct ', "")?.replace(/,\s*$/, "")}, ${group}`;
+                    // const finalQuery = `${query[0]} Group By ${selectQuery?.replace('Distinct ', "")?.replace(/,\s*$/, "")}, ${group}`;
+                    const withoutGroup = `${query[0]}`;
+                    const finalQuery = setWithGroupQuerySidefilter(group, withoutGroup);
+                    console.log(finalQuery);
                     
                     db?.query(finalQuery, query[1]?.slice(1), (err, results) => {
                         if (!err) { return success(res, "SUCCESS", results?.rows, res?.statusCode); } 
@@ -70,7 +74,8 @@ export const sideFilterController = {
             const isIndiaCountry = ["IND", "WEE"]?.includes(CountryCode);
     
             if (availablefield?.rows?.length > 0 && isIndiaCountry) {
-                valuefield = ' ROUND(SUM(CAST("ValueInUSD" as DOUBLE PRECISION))::numeric,2) as ValueInUSD';
+                // valuefield = ' ROUND(SUM(CAST("ValueInUSD" as DOUBLE PRECISION))::numeric,2) as ValueInUSD';
+                valuefield = 'ROUND(SUM("ValueInUSD"::numeric), 2) AS ValueInUSD ';
             }
             
             group = Direction?.toLowerCase() === 'import' ? '"CountryofOrigin"': '"CountryofDestination"';
@@ -100,7 +105,9 @@ export const sideFilterController = {
                         searchType: `sidefilter-${group}`
                     });
 
-                    const query = `${partialQuery[0]} group by ${selectQuery?.replace('Distinct ', "")?.replace(/,\s*$/, "")}${isSideFilter ? ` limit ${limit}`: ""}`;
+                    // const query = `${partialQuery[0]} group by ${selectQuery?.replace('Distinct ', "")?.replace(/,\s*$/, "")}${isSideFilter ? ` limit ${limit}`: ""}`;
+                    const withoutGroup = `${partialQuery[0]}${isSideFilter ? ` limit ${limit}`: ""}`;
+                    const query = setWithGroupQuerySidefilter(group, withoutGroup);
                     
                     db?.query(query, partialQuery[1]?.slice(1), (err, results) => {
                         if (!err) { return success(res, "SUCCESS", results?.rows, res?.statusCode); } 
@@ -123,7 +130,8 @@ export const sideFilterController = {
             const availablefield = await db?.query('SELECT column_name FROM information_schema.columns WHERE table_name = $1 and column_name = ANY($2)', [tableName, fieldList]);
     
             if (availablefield?.rows?.length > 0 && isIndiaCountry) {
-                valuefield = ' ROUND(SUM(CAST("ValueInUSD" as DOUBLE PRECISION))::numeric,2) as ValueInUSD';
+                // valuefield = ' ROUND(SUM(CAST("ValueInUSD" as DOUBLE PRECISION))::numeric,2) as ValueInUSD';
+                valuefield = 'ROUND(SUM("ValueInUSD"::numeric), 2) AS ValueInUSD ';
             }
 
             const companyColName = req?.path?.includes("Exp_Name") ? "Exp_Name": "Imp_Name";
@@ -153,8 +161,10 @@ export const sideFilterController = {
                         searchType: `sidefilter-${group}`
                     });
 
-                    const querySql = `${partialQuery[0]} GROUP BY ${selectQuery?.replace("Distinct ", "")?.replace(/,\s*$/, "")}, ${group}${isSideFilter ? ` limit ${limit}`: ""}`;
-                    
+                    // const querySql = `${partialQuery[0]} GROUP BY ${selectQuery?.replace("Distinct ", "")?.replace(/,\s*$/, "")}, ${group}${isSideFilter ? ` limit ${limit}`: ""}`;
+                    const withoutGroup = `${partialQuery[0]}${isSideFilter ? ` limit ${limit}`: ""}`;
+                    const querySql = setWithGroupQuerySidefilter(group, withoutGroup);
+
                     db?.query(querySql, partialQuery[1]?.slice(1), (err, results) => {
                         if (!err) { return success(res, "SUCCESS", results?.rows, res?.statusCode); } 
                         else { return next(ErrorHandling?.badRequestError(err?.message, err)); }
@@ -175,7 +185,8 @@ export const sideFilterController = {
             const availablefield = await db?.query('SELECT column_name FROM information_schema.columns WHERE table_name = $1 and column_name = ANY($2)', [tableName, fieldList]);
             
             if (availablefield?.rows?.length > 0 && isIndiaCountry) {
-                valuefield = ' ROUND(SUM(CAST("ValueInUSD" as DOUBLE PRECISION))::numeric,2) as ValueInUSD';
+                // valuefield = ' ROUND(SUM(CAST("ValueInUSD" as DOUBLE PRECISION))::numeric,2) as ValueInUSD';
+                valuefield = 'ROUND(SUM("ValueInUSD"::numeric), 2) AS ValueInUSD ';
             }
             
             const fieldName = req?.path?.replace(/^\/get|Filter$/gi, "");
@@ -199,9 +210,11 @@ export const sideFilterController = {
                         tablename: tableName,
                         isOrderBy: false,
                         query: `${finalQuery} FROM `,
-                        searchType: `sidefilter-${fieldName}`
+                        searchType: `sidefilter-"${fieldName}"`
                     });
-                    const querySql = `${partialQuery[0]} GROUP BY ${selectQuery?.replace("Distinct ", "")?.replace(/,\s*$/, "")}${isSideFilter ? ` limit ${limit}`: ""}`;
+                    // const querySql = `${partialQuery[0]} GROUP BY ${selectQuery?.replace("Distinct ", "")?.replace(/,\s*$/, "")}${isSideFilter ? ` limit ${limit}`: ""}`;
+                    const withoutGroup = `${partialQuery[0]}${isSideFilter ? ` limit ${limit}`: ""}`;
+                    const querySql = setWithGroupQuerySidefilter(fieldName, withoutGroup);
                     
                     db.query(querySql, partialQuery[1]?.slice(1), (err, results) => {
                         if (!err) { return success(res, "SUCCESS", results?.rows, res?.statusCode); } 

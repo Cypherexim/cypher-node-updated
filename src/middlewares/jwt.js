@@ -21,3 +21,8 @@ export const jwtMiddleHandler = async(req, res, next) => {
         next(ErrorHandling.internalServerError("Token is expired", error));
     }
 }
+
+export const antiXSSPolicy = (req, res, next) => {
+  res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'");
+  next();
+}

@@ -4,6 +4,7 @@ import { ErrorHandling } from "../../error/error.js";
 import { getDatabaseQuery, getavailableFieldlist } from "../../utils/common.js";
 import { getCurrentTableName } from "../../utils/utility.js";
 import { extractCountry } from "../../utils/miscellaneous.js";
+import { setWithGroupQueryAnalysis } from "../../utils/queryUnionGen.js";
 
 export const analysisController = async(req, res, next) => {
     try {
@@ -48,7 +49,10 @@ export const analysisController = async(req, res, next) => {
                     query: `"${fieldName}", ${fields?.toString()} FROM `,
                     searchType: `analysis-"${fieldName}"`
                 });
-                const finalQuery = `${finalqueryRes[0]} GROUP BY "${fieldName}"`;
+                
+                // const finalQuery = `${finalqueryRes[0]} GROUP BY "${fieldName}"`;
+                const withoutGroup = finalqueryRes[0];
+                const finalQuery = setWithGroupQueryAnalysis(fieldName, withoutGroup);
 
                 db?.query(finalQuery, finalqueryRes[1]?.slice(1), (err, result) => {
                     if (!err) {
