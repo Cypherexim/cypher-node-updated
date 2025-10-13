@@ -48,9 +48,8 @@ export const searchingCountryColumns = (direction, country) => {
 }
 
 
-export const fetchSideFilterQuery = (pathName) => {
-    const sideFilter = pathName?.replace(/^\/get|Filter$/gi, "");
-
+export const fetchSideFilterQuery = (sideFilter) => {
+    // const sideFilter = pathName?.replace(/^\/get|Filter$/gi, "");
     switch(sideFilter) {
         case "PortofDestination":
             return sideFiltersQuery?.GET_PORT_OF_DESTINATION_ACCESS;

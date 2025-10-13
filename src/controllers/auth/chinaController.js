@@ -15,9 +15,9 @@ export const chinaController = {
                     body: req?.body,
                     tablename: "export_china",
                     isOrderBy: true, 
-                    query: ""
+                    query: "",
+                    searchType: "data"
                 });
-console.log(query);
 
                 db?.query(query[0], query[1]?.slice(1), (err, results) => {
                     if(err) { return next(ErrorHandling?.badRequestError(err?.message, err)); }
@@ -41,7 +41,8 @@ console.log(query);
                     body: req?.body,
                     tablename: "import_china",
                     isOrderBy: true, 
-                    query: ""
+                    query: "",
+                    searchType: "data"
                 });
 
                 db?.query(query[0], query[1]?.slice(1), (err, results) => {

@@ -42,7 +42,8 @@ export const sideFilterController = {
                         body: req?.body, 
                         tablename: tableName,
                         isOrderBy: false,
-                        query: `${partialQuery} FROM `
+                        query: `${partialQuery} FROM `,
+                        searchType: `sidefilter-${group}`
                     });
 
                     const finalQuery = `${query[0]} Group By ${selectQuery?.replace('Distinct ', "")?.replace(/,\s*$/, "")}, ${group}`;
@@ -95,7 +96,8 @@ export const sideFilterController = {
                         body: req?.body,
                         tablename: tableName,
                         isOrderBy: false,
-                        query: `${finalQuery} FROM `
+                        query: `${finalQuery} FROM `,
+                        searchType: `sidefilter-${group}`
                     });
 
                     const query = `${partialQuery[0]} group by ${selectQuery?.replace('Distinct ', "")?.replace(/,\s*$/, "")}${isSideFilter ? ` limit ${limit}`: ""}`;
@@ -147,7 +149,8 @@ export const sideFilterController = {
                         body: req?.body,
                         tablename: tableName,
                         isOrderBy: false,
-                        query: `${finalQuery} FROM `
+                        query: `${finalQuery} FROM `,
+                        searchType: `sidefilter-${group}`
                     });
 
                     const querySql = `${partialQuery[0]} GROUP BY ${selectQuery?.replace("Distinct ", "")?.replace(/,\s*$/, "")}, ${group}${isSideFilter ? ` limit ${limit}`: ""}`;
@@ -174,9 +177,10 @@ export const sideFilterController = {
             if (availablefield?.rows?.length > 0 && isIndiaCountry) {
                 valuefield = ' ROUND(SUM(CAST("ValueInUSD" as DOUBLE PRECISION))::numeric,2) as ValueInUSD';
             }
-            const access = await db?.query(fetchSideFilterQuery(req?.path), [CountryCode, Direction?.toUpperCase(), countryType]);        
-            // group = req?.path?.replace(/^\/get|Filter$/gi, "");
-    
+            
+            const fieldName = req?.path?.replace(/^\/get|Filter$/gi, "");
+            const access = await db?.query(fetchSideFilterQuery(fieldName), [CountryCode, Direction?.toUpperCase(), countryType]);        
+            
             if (access?.rows?.length > 0) {
                 const keys = Object?.keys(access.rows[0]);
                 const obj = access?.rows[0];
@@ -194,7 +198,8 @@ export const sideFilterController = {
                         body: req?.body,
                         tablename: tableName,
                         isOrderBy: false,
-                        query: `${finalQuery} FROM `
+                        query: `${finalQuery} FROM `,
+                        searchType: `sidefilter-${fieldName}`
                     });
                     const querySql = `${partialQuery[0]} GROUP BY ${selectQuery?.replace("Distinct ", "")?.replace(/,\s*$/, "")}${isSideFilter ? ` limit ${limit}`: ""}`;
                     

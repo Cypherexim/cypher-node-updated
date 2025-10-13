@@ -46,7 +46,8 @@ export const statisticalController = {
                     tablename: tableName,
                     isOrderBy: true, 
                     query: availableColumnsQuery,
-                    countryType: "STATISTICAL"
+                    countryType: "STATISTICAL",
+                    searchType: "data"
                 });
 
                 db.query(query[0], query[1].slice(1), (err, results) => {
@@ -91,7 +92,8 @@ export const statisticalController = {
                     tablename: tableName,
                     isOrderBy: true, 
                     query: availableColumnsQuery,
-                    countryType: "STATISTICAL"
+                    countryType: "STATISTICAL",
+                    searchType: "data"
                 });
 
                 db.query(query[0], query[1].slice(1), (err, results) => {

@@ -1,7 +1,7 @@
 import db from "../config/database.js";
 import { countryDownloadingCols, searchingCountryColumns } from "./miscellaneous.js";
 import { generateParams, generateFilterQuery } from "../utils/utility.js";
-
+import { unionCompanyGenerator, unionBothCompanyGenerator } from "./queryUnionGen.js";
 
 export const deductSearches = async (UserId, IsWorkspaceSearch) => {
     const sqlQuery = `SELECT "Downloads", "Searches" FROM public.userplantransaction WHERE "UserId"=$1`;
@@ -21,32 +21,31 @@ export const deductSearches = async (UserId, IsWorkspaceSearch) => {
 }
 
 export const getDatabaseQuery = async (args) => {
-    return new Promise((resolve, reject) => {
-        const {body, tablename, isOrderBy, query, countryType=""} = args;
+    return new Promise(async(resolve, reject) => {
+        const {body, tablename, isOrderBy, query,  searchType=""} = args;
         const {fromDate, toDate, HsCode, ProductDesc, Imp_Name, Exp_Name, CountryofOrigin,
             CountryofDestination, Month, Year, uqc, Quantity, PortofOrigin, PortofDestination,
             Mode, LoadingPort, NotifyPartyName, Currency, page=0, itemperpage=0 } = body;
-    
-        const params = [];
-        const [direction, country] = tablename.split("_");
-        const selectQuery = query=="" ? `${searchingCountryColumns(direction, country)} FROM` : query;
-        const doesExist = (colName) => !(["", null, undefined].includes(colName));
-        
 
+        const params = [];
+        const searchFinalType = searchType.includes("-") ? searchType.split("-")[0]: searchType;
+        const isUnionAllow = ["data","analysis","sidefilter"].includes(searchFinalType);
+        const [direction, country] = tablename.split("_");
+        const selectQuery = query==="" ? `${searchingCountryColumns(direction, country)} FROM` : query;
+        const doesExist = (colName) => !(["", null, undefined].includes(colName));
+
+        
         if (doesExist(ProductDesc)) {
             if (ProductDesc.length > 0) {
                 ProductDesc.forEach(element => {
-                    if (doesExist(element)) { params.push(generateParams("ProductDesc", "SIMILAR TO", `%${element}%`)); }//`%(${element})%`)); }  //"%(" + element + ")%"
+                    if (doesExist(element)) { params.push(generateParams("ProductDesc", "SIMILAR TO", `%${element}%`)); }
                 });
             }
         }
-    
-        
+                
         if (doesExist(fromDate)) { params.push(generateParams("Date", ">=", fromDate)); }
         if (doesExist(toDate)) { params.push(generateParams("Date", "<=", toDate)); }
-        if (doesExist(HsCode)) { params.push(generateParams("HsCode", "LIKE", `(${HsCode.join("|")})%`)); } //'(300|500)%'     '(300|500)%'    //, "(" + HsCode.join("|") + ")%"
-        if (doesExist(Imp_Name)) { params.push(generateParams("Imp_Name", "ANY", Imp_Name)); }
-        if (doesExist(Exp_Name)) { params.push(generateParams("Exp_Name", "ANY", Exp_Name)); }
+        if (doesExist(HsCode)) { params.push(generateParams("HsCode", "LIKE", `(${HsCode.join("|")})%`)); }
         if (doesExist(CountryofOrigin)) { params.push(generateParams("CountryofOrigin", "ANY", CountryofOrigin)) }
         if (doesExist(CountryofDestination)) { params.push(generateParams("CountryofDestination", "ANY", CountryofDestination)) }
         if (doesExist(Month)) { params.push(generateParams("Month", "ANY", Month)) }
@@ -58,15 +57,45 @@ export const getDatabaseQuery = async (args) => {
         if (doesExist(PortofDestination)) { params.push(generateParams("PortofDestination", "ANY", PortofDestination)) }
         if (doesExist(Mode)) { params.push(generateParams("Mode", "ANY", Mode)) }
         if (doesExist(LoadingPort)) { params.push(generateParams("LoadingPort", "ANY", LoadingPort)) }
-        if (doesExist(NotifyPartyName)) { params.push(generateParams("NotifyPartyName", "ANY", NotifyPartyName)) }
+        if (doesExist(NotifyPartyName)) { params.push(generateParams("NotifyPartyName", "ANY", NotifyPartyName)) }   
+        if (!isUnionAllow && doesExist(Imp_Name)) { params.push(generateParams("Imp_Name", "ANY", Imp_Name)); } //multi push
+        if (!isUnionAllow && doesExist(Exp_Name)) { params.push(generateParams("Exp_Name", "ANY", Exp_Name)); } //multi push
+                
+        let querytoexecute = generateFilterQuery(params, selectQuery, tablename);        
+        
+        if(isUnionAllow) {
+            if(doesExist(Imp_Name) && doesExist(Exp_Name)) {
+                querytoexecute[0] = await unionBothCompanyGenerator({
+                    partialQuery: querytoexecute[0], 
+                    companyColNames: ["Imp_Name", "Exp_Name"], 
+                    companyList: [Imp_Name, Exp_Name], 
+                    direction: direction,
+                    searchType
+                });
+            } else if(doesExist(Imp_Name) || doesExist(Exp_Name)) {
+                const isImporterExist = doesExist(Imp_Name);
+                const columnName = isImporterExist ? "Imp_Name": "Exp_Name";
+                const companiesList = columnName==="Imp_Name" ? Imp_Name: Exp_Name;
 
-        const querytoexecute = generateFilterQuery(params, selectQuery, tablename);
+                querytoexecute[0] = await unionCompanyGenerator({
+                    partialQuery: querytoexecute[0], 
+                    companyColName: columnName, 
+                    companyList: companiesList, 
+                    searchType: searchType
+                });
+            } else {
+                const addOn = ["sidefilter","analysis"].includes(searchType.split("-")[0]) ? ` GROUP BY ${searchType.split("-")[1]}`: "";
+                querytoexecute[0] += addOn;
+            }
+        } 
         const finalQuery = querytoexecute[0] + (isOrderBy ? ` ORDER BY "Date" DESC LIMIT ${Number(itemperpage)} OFFSET ${(Number(page) - 1) * Number(itemperpage)}` : "");
-// console.log([finalQuery, querytoexecute[1]]);
-
+                
         return resolve([finalQuery, querytoexecute[1]]);
     });
 }
+
+
+
 
 export const getCountryDetails = (pathName) => {
     const countryDirection = pathName.replace("/get", "");

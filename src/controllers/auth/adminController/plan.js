@@ -42,8 +42,8 @@ export const planAdminController = {
             "Whatstrending", "Companyprofile", "Contactdetails", "Addonfacility", "Analysis", "User" FROM public.plan`;
 
             db?.query(getPlanlist, (err, result) => {
-                if(!err) { return next(ErrorHandling?.badRequestError(err?.message, err)); }
-                else { return success(res, "SUCCESS", result?.rows, res?.statusCode); }
+                if(!err) { return success(res, "SUCCESS", result?.rows, res?.statusCode); }
+                else { return next(ErrorHandling?.badRequestError(err?.message, err)); }
             });
         } catch (err) { return next(ErrorHandling?.internalServerError(err?.message, err)); };
     }

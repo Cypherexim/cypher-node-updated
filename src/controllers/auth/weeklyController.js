@@ -12,7 +12,8 @@ export const weeklyController = {
                 body: req?.body,
                 tablename: "export_weekly",
                 isOrderBy: true,
-                query: ""
+                query: "",
+                searchType: "data"
             });
             const check = await deductSearches(UserId, IsWorkspaceSearch);
             
@@ -34,7 +35,8 @@ export const weeklyController = {
                 body: req?.body,
                 tablename: "import_weekly",
                 isOrderBy: true,
-                query: ""
+                query: "",
+                searchType: "data"
             });
             const check = await deductSearches(UserId, IsWorkspaceSearch);
 

@@ -31,6 +31,7 @@ app.use([
 ]);
 
 //*********************APIs*************************//
+app.get("/", (req, res, next) => res.send("Cypher Portal 2.0 APIs"));
 app.use("/api", routers);
 
 //********************Metrics***********************//

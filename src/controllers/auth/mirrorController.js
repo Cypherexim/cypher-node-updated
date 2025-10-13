@@ -16,10 +16,11 @@ export const mirrorController = {
             
             if (check) {                
                 const query = await getDatabaseQuery({
-                    body: req.body,
+                    body: req?.body,
                     tablename: "export_mirror",
                     isOrderBy: true, 
-                    query: ""
+                    query: "",
+                    searchType: "data"
                 });
 
                 db.query(query[0], query[1]?.slice(1), (err, results) => {
@@ -47,7 +48,8 @@ export const mirrorController = {
                     body: req?.body,
                     tablename: "import_mirror",
                     isOrderBy: true, 
-                    query: ""
+                    query: "",
+                    searchType: "data"
                 });
 
                 db.query(query[0], query[1]?.slice(1), (err, results) => {

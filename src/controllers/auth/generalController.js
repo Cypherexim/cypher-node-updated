@@ -215,7 +215,7 @@ export const generalController = {
             });
         } catch { return next(ErrorHandling?.internalServerError(err?.message, err)); };
     },
-    
+
     updateCompanyPoints: async(req, res, next) => {
         try {
             const sqlQuery = 'update "userplantransaction" set "Companyprofile"="Companyprofile"::integer-1 where "UserId"=$1 returning "Companyprofile"';
@@ -228,6 +228,20 @@ export const generalController = {
             });
         } catch { return next(ErrorHandling?.internalServerError(err?.message, err)); };
     },
+
+    getAllSideFilterAccess: async(req, res, next) => {
+        try {
+            const sqlQuery = `select "Id", (select "CountryName" from "Country" where "data_type"=$1 and "Countrycode"="Country") as "country_name", "Direction",
+            "Country", "CountryType", "HsCode", "ProductDesc", "Exp_Name", "Imp_Name", "CountryofDestination", "CountryofOrigin", "PortofOrigin", "PortofDestination", "Mode", "uqc", 
+            "Quantity", "Currency", "Month", "Year", "LoadingPort", "NotifyPartyName", active from public."SideFilterAccess" where "CountryType"=$1 order by "Country"`;
+
+            db?.query(sqlQuery, [req?.query?.type], (err, result) => {
+                if (!err) { return success(res, "SUCCESS", result?.rows, res?.statusCode); } 
+                else { return next(ErrorHandling?.badRequestError(err?.message, err)); }
+            })
+
+        } catch (err) { return next(ErrorHandling?.internalServerError(err?.message, err)); };
+    }
 };
 
 

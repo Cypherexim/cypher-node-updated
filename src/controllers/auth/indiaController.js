@@ -15,7 +15,8 @@ export const indiaController = {
                     body: req?.body,
                     tablename: "import_india",
                     isOrderBy: true,
-                    query: ""
+                    query: "",
+                    searchType: "data"
                 });
                 
                 db.query(query[0], query[1]?.slice(1), (err, results) => {
@@ -38,7 +39,8 @@ export const indiaController = {
                     body: req?.body, 
                     tablename: "export_india",
                     isOrderBy: true,
-                    query: ""
+                    query: "",
+                    searchType: "data"
                 });
                 
                 db.query(query[0], query[1]?.slice(1), (err, results) => {

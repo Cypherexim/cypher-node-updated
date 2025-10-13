@@ -44,7 +44,8 @@ export const downloadingController = async (req, res, next) => {
                     body: req?.body,
                     tablename: tableName,
                     isOrderBy: false,
-                    query: getquery(direction, CountryCode)
+                    query: getquery(direction, CountryCode),
+                    searchType: "data"
                 });
                 searchedResult = await db?.query(finalquery[0], finalquery[1].slice(1));
                 const loopLen = searchedResult?.rows?.length;

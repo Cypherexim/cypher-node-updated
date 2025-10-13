@@ -1,1 +1,49 @@
 validations on insertion
+
+export const getDatabaseQuery = async (args) => {
+    return new Promise((resolve, reject) => {
+        const {body, tablename, isOrderBy, query, countryType=""} = args;
+        const {fromDate, toDate, HsCode, ProductDesc, Imp_Name, Exp_Name, CountryofOrigin,
+            CountryofDestination, Month, Year, uqc, Quantity, PortofOrigin, PortofDestination,
+            Mode, LoadingPort, NotifyPartyName, Currency, page=0, itemperpage=0 } = body;
+    
+        const params = [];
+        const [direction, country] = tablename.split("_");
+        const selectQuery = query=="" ? `${searchingCountryColumns(direction, country)} FROM` : query;
+        const doesExist = (colName) => !(["", null, undefined].includes(colName));
+        
+
+        if (doesExist(ProductDesc)) {
+            if (ProductDesc.length > 0) {
+                ProductDesc.forEach(element => {
+                    if (doesExist(element)) { params.push(generateParams("ProductDesc", "SIMILAR TO", `%${element}%`)); }//`%(${element})%`)); }  //"%(" + element + ")%"
+                });
+            }
+        }
+    
+        
+        if (doesExist(fromDate)) { params.push(generateParams("Date", ">=", fromDate)); }
+        if (doesExist(toDate)) { params.push(generateParams("Date", "<=", toDate)); }
+        if (doesExist(HsCode)) { params.push(generateParams("HsCode", "LIKE", `(${HsCode.join("|")})%`)); } //'(300|500)%'     '(300|500)%'    //, "(" + HsCode.join("|") + ")%"
+        if (doesExist(Imp_Name)) { params.push(generateParams("Imp_Name", "ANY", Imp_Name)); }
+        if (doesExist(Exp_Name)) { params.push(generateParams("Exp_Name", "ANY", Exp_Name)); }
+        if (doesExist(CountryofOrigin)) { params.push(generateParams("CountryofOrigin", "ANY", CountryofOrigin)) }
+        if (doesExist(CountryofDestination)) { params.push(generateParams("CountryofDestination", "ANY", CountryofDestination)) }
+        if (doesExist(Month)) { params.push(generateParams("Month", "ANY", Month)) }
+        if (doesExist(Year)) { params.push(generateParams("Year", "= ANY", Year)) }
+        if (doesExist(uqc)) { params.push(generateParams("uqc", "ANY", uqc)) }
+        if (doesExist(Quantity)) { params.push(generateParams("Quantity", "<=", Quantity)) }
+        if (doesExist(Currency)) { params.push(generateParams("Currency", "ANY", Currency)) }
+        if (doesExist(PortofOrigin)) { params.push(generateParams("PortofOrigin", "ANY", PortofOrigin)) }
+        if (doesExist(PortofDestination)) { params.push(generateParams("PortofDestination", "ANY", PortofDestination)) }
+        if (doesExist(Mode)) { params.push(generateParams("Mode", "ANY", Mode)) }
+        if (doesExist(LoadingPort)) { params.push(generateParams("LoadingPort", "ANY", LoadingPort)) }
+        if (doesExist(NotifyPartyName)) { params.push(generateParams("NotifyPartyName", "ANY", NotifyPartyName)) }
+
+        const querytoexecute = generateFilterQuery(params, selectQuery, tablename);
+        const finalQuery = querytoexecute[0] + (isOrderBy ? ` ORDER BY "Date" DESC LIMIT ${Number(itemperpage)} OFFSET ${(Number(page) - 1) * Number(itemperpage)}` : "");
+// console.log([finalQuery, querytoexecute[1]]);
+
+        return resolve([finalQuery, querytoexecute[1]]);
+    });
+}

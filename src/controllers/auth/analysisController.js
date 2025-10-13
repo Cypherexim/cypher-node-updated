@@ -45,7 +45,8 @@ export const analysisController = async(req, res, next) => {
                     body: req?.body,
                     tablename: tableName,
                     isOrderBy: false,
-                    query: `"${fieldName}", ${fields?.toString()} FROM `
+                    query: `"${fieldName}", ${fields?.toString()} FROM `,
+                    searchType: `analysis-"${fieldName}"`
                 });
                 const finalQuery = `${finalqueryRes[0]} GROUP BY "${fieldName}"`;
 
@@ -80,7 +81,8 @@ export const getRecordCountController = async(req, res, next) => {
             body: req?.body,
             tablename: tableName,
             isOrderBy: false,
-            query: await getavailableFieldlist(tableName, countryType)
+            query: await getavailableFieldlist(tableName, countryType),
+            searchType: "count"
         });
 
         db?.query(counterquery[0], counterquery[1]?.slice(1), (err, results) => {

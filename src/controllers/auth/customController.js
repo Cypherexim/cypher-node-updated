@@ -16,7 +16,8 @@ export const customController = {
                     body: req.body,
                     tablename: `export_${country}`, 
                     isOrderBy: true, 
-                    query: ""
+                    query: "",
+                    searchType: "data"
                 });
 
                 db.query(query[0], query[1].slice(1), (err, results) => {
@@ -42,7 +43,8 @@ export const customController = {
                     body: req.body,
                     tablename: `import_${country}`, 
                     isOrderBy: true, 
-                    query: ""
+                    query: "",
+                    searchType: "data"
                 });
 
                 db.query(query[0], query[1].slice(1), (err, results) => {
