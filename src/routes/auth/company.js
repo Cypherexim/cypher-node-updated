@@ -9,7 +9,6 @@ router.get("/getFeedbacks", companyProfileController?.getFeedbacks);
 router.post("/addNewFeedback", companyProfileController?.addNewFeedback);
 router.get("/getTop5Companies", companyProfileController?.getTopFiveCompanies);
 router.get("/getTop10Companies", companyProfileController?.getTopTenCompanies);
-router.post('/getCompanyprofile', companyProfileController?.getcompanyprofile);
 router.post("/getBuyersList", companyProfileController.getLocatorCompaniesList);
 router.post("/setNewCompanyData", companyProfileController?.setNewCompanyDetails);
 router.post("/getSuppliersList", companyProfileController.getLocatorCompaniesList);
@@ -21,5 +20,6 @@ router.get("/getRequestedCompanies", companyProfileController?.getRequestedCompa
 router.get("/getCommodityCountList", companyProfileController?.getCommodityCountList);
 router.get("/getCompanyListBykeword", companyProfileController?.getCompanyListBykeword);
 router.post("/transferForCompanyData", companyProfileController?.transferCompanyDetails);
+router.post("/getCompanyProfile/:type", companyProfileController?.getCompanyProfileHandler);
 
 export default router;

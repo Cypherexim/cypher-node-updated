@@ -58,22 +58,22 @@ export const counterOrientedQueryGen = (args) => {
     return new Promise((resolve, reject) => {
         try {        
             let { importers, exporters, partialQuery } = args;
-            let importQuery = "", exportQuery = "";
+            let importQuery = `"Imp_Name" SIMILAR TO '(`, exportQuery = `"Exp_Name" SIMILAR TO '(`;
         
             if(importers?.length>0 && exporters?.length>0) {
-                for(let i=0; i<importers?.length; i++) { importQuery += `"Imp_Name" ILIKE '${importers[i]}' OR `; }
-                for(let j=0; j<exporters?.length; j++) { exportQuery += `"Imp_Name" ILIKE '${exporters[j]}' OR `; }
-        
-                partialQuery += ` AND (${importQuery?.substring(0, importQuery?.length-4)}) AND (${exportQuery?.substring(0, exportQuery?.length-4)})`;
+                for(let i=0; i<importers?.length; i++) { importQuery += importers[i]+"|"; }
+                for(let j=0; j<exporters?.length; j++) { exportQuery += exporters[j]+"|"; }
+                
+                partialQuery += ` AND ${importQuery?.substring(0, importQuery?.length-1)+")'"} AND ${exportQuery?.substring(0, exportQuery?.length-1)+")'"}`;
                 resolve(partialQuery);
             } else {
                 if(importers?.length>0) {
-                    for(let i=0; i<importers?.length; i++) { importQuery += `"Imp_Name" ILIKE '${importers[i]}' OR `; }
-                    partialQuery += ` AND (${importQuery?.substring(0, importQuery?.length-4)})`;
+                    for(let i=0; i<importers?.length; i++) { importQuery += importers[i]+"|"; }
+                    partialQuery += ` AND ${importQuery?.substring(0, importQuery?.length-1)+")'"}`;
                     resolve(partialQuery);
                 } else if(exporters?.length>0) {
-                    for(let j=0; j<exporters?.length; j++) { exportQuery += `"Imp_Name" ILIKE '${exporters[j]}' OR `; }
-                    partialQuery += ` AND (${exportQuery?.substring(0, exportQuery?.length-4)})`;
+                    for(let j=0; j<exporters?.length; j++) { exportQuery += exporters[j]+"|"; }
+                    partialQuery += ` AND ${exportQuery?.substring(0, exportQuery?.length-1)+")'"}`;
                     resolve(partialQuery);
                 }
             }

@@ -42,6 +42,7 @@ router.get('/getGlobalCountriesList',countryAdminController?.getGlobalCountriesL
 router.post('/addlog',OthersAdminControllers?.adduserlog);
 router.get('/getlogs', OthersAdminControllers?.getUserlogs);
 router.get('/getalertmessage',OthersAdminControllers?.getAlertMessage);
+router.get('/stopAlertMessage', OthersAdminControllers?.stopAlertMessage);
 router.get('/getnotification', OthersAdminControllers?.getnotification);
 router.post('/addnotification', OthersAdminControllers?.addnotification);
 router.post('/adduseractionlog', OthersAdminControllers?.adduseractionlog);

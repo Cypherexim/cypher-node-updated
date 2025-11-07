@@ -1,44 +1,24 @@
 import db from '../../config/database.js';
 import { ErrorHandling } from '../../error/error.js';
 import { success } from '../../utils/response.js';
-import { extractCountry } from "../../utils/miscellaneous.js"
-import { formatDate, companyProfileStartDate, getCurrentTableName } from '../../utils/utility.js';
+import { getCurrentTableName } from '../../utils/utility.js';
+import { companyHandleGen } from '../../utils/company.js';
 
 export const companyProfileController = {
-    getcompanyprofile: async (req, res, next) => {
+    getCompanyProfileHandler: async(req, res, next) => {
         try {
-            const { date, countryname, companyname, direction, sameCompanyCountry, countryType } = req?.body;
+            const companyHandleRes = await companyHandleGen(req?.body, req?.params?.type);
 
-            let selectedfields = "";
-            const dateTo = formatDate(new Date(date));
-            const dateFrom = companyProfileStartDate(date);
+            if(!companyHandleRes) { return next(ErrorHandling?.badRequestError(err?.message, err)); }
 
-            const fieldList = ["'Exp_Name'", "'Imp_Name'", "'HsCode'", "'Quantity'", "'ValueInUSD'", "'CountryofDestination'", "'CountryofOrigin'"].concat(sameCompanyCountry ? ["'Exp_Address'", "'Exp_City'", "'Exp_PIN'", "'Exp_Phone'", "'Exp_Email'", "'Importer_Address'", "'Importer_City'", "'Importer_PIN'", "'Importer_Phone'", "'Importer_Email'"]?.toLocaleString() : []);
+            const { query, date } = companyHandleRes;
+            const { dateFrom, dateTo } = date;
 
-            const { tableName } = getCurrentTableName({ countryType, direction, countryname });
-            const countryKey = direction==="import" ? "CountryofDestination" : "CountryofOrigin";
-            
-            if (countryType === "MIRROR" && countryname !== "china") {
-                const extractedCountryName = extractCountry(countryname);
-                if (Object.hasOwn(req?.body, countryKey)) { req?.body[countryKey]?.push(extractedCountryName); }
-                else { req.body[countryKey] = [extractedCountryName]; }
-            }
-
-            const companyColName = sameCompanyCountry 
-                ? direction?.toLowerCase()==="import" ? "Imp_Name" : "Exp_Name" 
-                : direction?.toLowerCase() === "import" ? "Exp_Name" : "Imp_Name";
-
-            const sqlQuery = `SELECT column_name FROM information_schema.columns WHERE table_name = $1 and column_name in (${fieldList?.toString()})`;
-            const availablefield = await db?.query(sqlQuery, [tableName]);
-            availablefield?.rows?.forEach(item => { selectedfields += `"${item?.column_name}",`; });
-
-            const inCaseOfMirrorCountry = countryType === 'MIRROR' ? `"${countryKey}" ilike '${req?.body[countryKey]}' AND` : "";
-            const query = `SELECT ${selectedfields?.replace(/,\s*$/, "")} FROM ${tableName} where "Date" >= $1 AND "Date" <= $2 AND ${inCaseOfMirrorCountry} "${companyColName}" like '%${companyname}%'`;
             db?.query(query, [dateFrom, dateTo], (err, results) => {
                 if (!err) { return success(res, "SUCCESS", results?.rows, res?.statusCode); } 
                 else { return next(ErrorHandling?.badRequestError(err?.message, err)); }
             });
-        } catch (err) { return next(ErrorHandling?.internalServerError(err?.message, err)); };
+        } catch (err) { return next(ErrorHandling?.internalServerError(err?.message, err)); }
     },
 
     getCompanyInfoDetails: (req, res, next) => {
@@ -234,3 +214,6 @@ export const companyProfileController = {
         } catch (err) { return next(ErrorHandling?.internalServerError(err?.message, err)); };
     }
 }
+
+
+

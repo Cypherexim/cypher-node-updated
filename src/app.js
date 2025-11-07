@@ -6,12 +6,12 @@ import { error } from "./utils/response.js";
 import { cronJobs } from "./services/cronJob.js";
 import { errorFileWriter } from "./services/fileWrite.js";
 
+import { antiXSSPolicy } from "./middlewares/jwt.js";
 import { register } from "./prometheus/prometheus.js";
 import { generalPrometheusMiddleware } from "./middlewares/prometheus/general.js";
 import { reqResSizeSpeed } from "./middlewares/prometheus/requestResponseSpeed.js";
 import { httpReqSizeByte } from "./middlewares/prometheus/requestSizeByteCounter.js";
 import { httpResSizeByte } from "./middlewares/prometheus/responseSizeByteCounter.js";
-import { antiXSSPolicy } from "./middlewares/jwt.js";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -60,7 +60,10 @@ app.use(async(err, req, res, next) => {
     return res?.status(err?.statusCode || 500)?.json(error(errMsg, err?.statusCode));
 });
 
-app.listen(PORT, () => {
-    console.log("Server is running on Port:", PORT);
-    console.log("click here: http://localhost:"+PORT);
-});
+export const startServer = () => {
+  app.listen(PORT, () => {
+      console.log("Server is running on Port:", PORT);
+      console.log("click here: http://localhost:"+PORT);
+  });
+} 
+

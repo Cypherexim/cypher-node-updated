@@ -32,7 +32,8 @@ export const OthersAdminControllers = {
 
     getUserlogs: async (req, res, next) => {
         try {
-            const sqlQuery = `SELECT "Id", "Userlog"."UserId", "IP", "Userlog"."Location", "Searchcount", "Searchhistory", "Datetime", "Email" FROM public."Userlog" inner join "Cypher" on "Userlog"."UserId" = "Cypher"."UserId" ORDER BY "Datetime" DESC`;
+            const offset = (req?.query?.page-1) * 100;
+            const sqlQuery = `SELECT "Id", "Userlog"."UserId", "IP", "Userlog"."Location", "Searchcount", "Searchhistory", "Datetime", "Email" FROM public."Userlog" inner join "Cypher" on "Userlog"."UserId" = "Cypher"."UserId" ORDER BY "Datetime" DESC LIMIT 100 OFFSET ${offset}`;
 
             db?.query(sqlQuery, (err, results) => {
                 if (!err) { return success(res, "SUCCESS", results?.rows, res?.statusCode); } 
@@ -56,9 +57,11 @@ export const OthersAdminControllers = {
 
     getUserActionlogs: async (req, res, next) => {
         try {
-            const sqlQuery = `SELECT * FROM public."UserActionLog" where "LogType" ILIKE $1 ORDER BY "CreatedDate" DESC`;
+            const { LogType, page } = req.query;
+            const offset = (page-1) * 100;
+            const sqlQuery = `SELECT * FROM public."UserActionLog" where "LogType" ILIKE $1 ORDER BY "CreatedDate" DESC LIMIT 100 OFFSET ${offset}`;
 
-            db?.query(sqlQuery, [`${req?.query?.LogType}%`], (err, results) => {
+            db?.query(sqlQuery, [`${LogType}%`], (err, results) => {
                 if (!err) { return success(res, "SUCCESS", results?.rows, res?.statusCode); } 
                 else { return next(ErrorHandling?.badRequestError(err?.message, err)); }
             });
@@ -79,9 +82,11 @@ export const OthersAdminControllers = {
 
     getUserActivitylogs: async (req, res, next) => {
         try {
-            const { UserId } = req?.query;
+            const { UserId, page } = req?.query;
+            const offset = (page-1) * 100;
+
             if (UserId) {
-                const sqlQuery = `SELECT * FROM "UserActivityLog" Where "UserId"=$1 ORDER BY "Lastlogin" DESC`;
+                const sqlQuery = `SELECT * FROM "UserActivityLog" Where "UserId"=$1 ORDER BY "Lastlogin" DESC LIMIT 100 OFFSET ${offset}`;
 
                 db?.query(sqlQuery, [UserId], (err, results) => {
                     if (!err) { return success(res, "SUCCESS", results?.rows, res?.statusCode); } 
@@ -117,6 +122,17 @@ export const OthersAdminControllers = {
             // const { marquee } = JSON.parse(message);
             
             db?.query(sqlQuery, queryParams, async (err, results) => {
+                if (!err) { return success(res, "UPDATED", [], res?.statusCode); } 
+                else { return next(ErrorHandling?.badRequestError(err?.message, err)); }
+            });
+        } catch (err) { return next(ErrorHandling?.internalServerError(err?.message, err)) }
+    },
+
+    stopAlertMessage: async(req, res, next) => {
+        try {            
+            const sqlQuery = `UPDATE public.alert_msg SET status=false WHERE id=${req?.id}`;
+            
+            db?.query(sqlQuery, (err, results) => {
                 if (!err) { return success(res, "UPDATED", [], res?.statusCode); } 
                 else { return next(ErrorHandling?.badRequestError(err?.message, err)); }
             });

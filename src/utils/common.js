@@ -1,7 +1,7 @@
 import db from "../config/database.js";
-import { countryDownloadingCols, searchingCountryColumns } from "./miscellaneous.js";
 import { generateParams, generateFilterQuery } from "../utils/utility.js";
-import { unionCompanyGenerator, unionBothCompanyGenerator } from "./queryUnionGen.js";
+import { countryDownloadingCols, searchingCountryColumns } from "./miscellaneous.js";
+import { unionCompanyGenerator, unionBothCompanyGenerator, counterOrientedQueryGen } from "./queryUnionGen.js";
 
 export const deductSearches = async (UserId, IsWorkspaceSearch) => {
     const sqlQuery = `SELECT "Downloads", "Searches" FROM public.userplantransaction WHERE "UserId"=$1`;
@@ -63,7 +63,7 @@ export const getDatabaseQuery = async (args) => {
                 
         let querytoexecute = generateFilterQuery(params, selectQuery, tablename);        
         
-        if(isUnionAllow) {
+        if(isUnionAllow) { //Exp & Imp based union all generated query
             if(doesExist(Imp_Name) && doesExist(Exp_Name)) {
                 querytoexecute[0] = await unionBothCompanyGenerator({
                     partialQuery: querytoexecute[0], 
@@ -83,11 +83,18 @@ export const getDatabaseQuery = async (args) => {
                     companyList: companiesList, 
                     searchType: searchType
                 });
-            } else {
+            } else { //modified sideFilter & analysis generated query
                 const addOn = ["sidefilter","analysis"].includes(searchType.split("-")[0]) ? ` GROUP BY ${searchType.split("-")[1]}`: "";
                 querytoexecute[0] += addOn;
             }
-        } 
+        } else { //counter modifying generated query
+            querytoexecute[0] = await counterOrientedQueryGen({ 
+                importers: Imp_Name, 
+                exporters: Exp_Name, 
+                partialQuery: querytoexecute[0]
+            });
+        }
+
         const finalQuery = querytoexecute[0] + (isOrderBy ? ` ORDER BY "Date" DESC LIMIT ${Number(itemperpage)} OFFSET ${(Number(page) - 1) * Number(itemperpage)}` : "");
                 
         return resolve([finalQuery, querytoexecute[1]]);
