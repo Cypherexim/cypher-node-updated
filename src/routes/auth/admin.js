@@ -52,3 +52,13 @@ router.post('/adduseractivitylog', OthersAdminControllers?.adduserActivitylog);
 router.get('/getuseractivitylist', OthersAdminControllers?.getUserActivitylogs);
 
 export default router;
+
+
+
+
+
+
+
+
+
+
